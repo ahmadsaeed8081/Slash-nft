@@ -186,11 +186,17 @@ async function mount() {
 
 
 async function mintNft(value) {
-  // if((Number(CurrPrice) * Number(quantity)) > Number(balance) )
-  // {
-  //   alert("you dont have enough balance to buy");
-  //   return
-  // }
+
+  if(!isConnected)
+  {
+    alert("Kindly Connect your wallet");
+    return;
+  }
+  if(80000000 > Number(usdt_balance) )
+  {
+    alert("you dont have enough usdt to buy");
+    return
+  }
   set_choosedNFT(value);
   console.log("object mint");
 // Mint_Switch?.();
