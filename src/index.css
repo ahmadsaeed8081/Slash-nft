@@ -43,3 +43,64 @@ body{
     color: white;
     background-color: #DA3D4D;
   }
+  .earning-sec {
+    border-top: 2px solid #282945;
+    border-bottom: 2px solid #282945;
+    padding: 50px 0;
+    .sec-tag {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 23px;
+      color: #ffffff;
+      margin-bottom: 30px;
+      @include media("<=phoneH") {
+        font-size: 18px;
+      }
+    }
+    .table-block {
+      background: #282945;
+      border-radius: 10px;
+      @include media("<=tablet") {
+        overflow: auto;
+        &::-webkit-scrollbar {
+          width: 5px;
+          height: 5px;
+        }
+      }
+      .table-row {
+        padding: 6px 40px;
+        @include media("<=tablet") {
+          width: 830px;
+        }
+        &:first-child {
+          margin-bottom: 20px;
+          padding: 20px 40px;
+          border-bottom: 2px solid #282945;
+        }
+        &:last-child {
+          margin-bottom: 20px;
+        }
+        .row-item {
+          flex: 1;
+          align-items: center;
+          justify-content: center;
+          &:first-child {
+            flex: 0.3;
+            @include media("<=phoneH") {
+              flex: 0.1;
+            }
+          }
+          .row-lbl {
+            font-family: "Inter";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }

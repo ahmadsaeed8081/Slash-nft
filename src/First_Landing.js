@@ -36,6 +36,7 @@ const [usdt_balance, set_usdtBalance] = useState(0);
 const [choosedNFT, set_choosedNFT] = useState(0);
 const [mintedNfts, set_mintedNfts] = useState([]);
 const [myNfts, set_myNfts] = useState([]);
+const [manualRefree, set_manualRefree] = useState("0x0000000000000000000000000000000000000000");
 
 const [loader, setLoader] = useState(false);
 
@@ -153,7 +154,7 @@ async function mount() {
     let publicSaleCost = await contract.methods.publicSaleCost().call();
 
     let mintedList_arr = await contract.methods.get_MintedNFTs().call();
-    let myNFTS = await contract.methods.get_MintedNFTs().call({from: address});
+    let myNFTS = await contract.methods.get_myAllNFTs().call({from: address});
     console.log("my nfs arr "+myNFTS);
 
     console.log("hello minted arr "+mintedList_arr);
@@ -185,7 +186,33 @@ async function mount() {
 
 
 
-async function mintNft(value) {
+function reg_ref() {
+
+  if(!isConnected)
+  {
+    alert("Kindly Connect your wallet");
+    return;
+  }
+  if(80000000 > Number(usdt_balance) )
+  {
+    alert("you dont have enough usdt to buy");
+    return
+  }
+  console.log("object mint");
+// Mint_Switch?.();
+
+  if (chain.id != CHAIN_ID) {
+    Mint_Switch?.();
+  } else {
+    usdt_approval?.();
+  }
+}
+
+
+
+
+
+ function mintNft(value) {
 
   if(!isConnected)
   {
@@ -222,7 +249,7 @@ async function mintNft(value) {
           <Route  path='/faqs' element={<Faq     />} />
           <Route  path='/market_place' element={<MarketPlace  mintNFT={mintNft} set_choosedNFT={set_choosedNFT} mintedNfts={mintedNfts}/>} />
           <Route  path='/my_nfts' element={<MyNfts  myNfts={myNfts} />} />
-          <Route  path='/profile' element={<Profile  usdt_balance={usdt_balance} />} />
+          <Route  path='/profile' element={<Profile manualRefree={manualRefree} set_manualRefree={set_manualRefree} usdt_balance={usdt_balance}  myNfts={myNfts}/>} />
           <Route  path='/announcements' element={<Announcements     />} />
        
        

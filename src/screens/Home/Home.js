@@ -13,7 +13,7 @@ const Home = ({mintNFT,set_choosedNFT,mintedNfts}) => {
         <Hero/>
         <div className='bg-[#F5F5F5]'>
 
-        <LatestNfts />
+        <LatestNfts mintedNfts={mintedNfts}/>
         <NftProduct mintNFT={mintNFT} mintedNfts={mintedNfts} set_choosedNFT={set_choosedNFT}/>
         </div>
 
