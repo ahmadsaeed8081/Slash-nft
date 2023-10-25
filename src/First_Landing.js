@@ -175,7 +175,7 @@ async function mount() {
 
     let maxSupply = await contract.methods.MAX_SUPPLY().call();
     let max_per_wallet = await contract.methods.max_per_wallet().call();
-    let isReferred = await contract.methods.isReferred().call();
+    let isReferred = await contract.methods.isReferred(address).call();
 
     let mintedList_arr = await contract.methods.get_MintedNFTs().call();
     let myNFTS = await contract.methods.get_myAllNFTs().call({from: address});
