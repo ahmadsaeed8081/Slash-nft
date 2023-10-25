@@ -7,7 +7,7 @@ import { Location, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';        
 import {FiEdit} from 'react-icons/fi';
 import { t } from 'i18next';
-const Profile = ({usdt_balance,myNfts ,manualRefree,set_manualRefree}) => {
+const Profile = ({usdt_balance,myNfts ,manualRefree,set_manualRefree,reg_referral,isReferred}) => {
 
   const [image,setImage] = useState('');
   const [refModal,showModal_ref] = useState(false);
@@ -131,27 +131,48 @@ if(image){
         </div>
 
         <div className=' w-[100%] sm:w-[50%] mx-auto  p-6 shadow-lg rounded-md'>
-        <div>
-            <h1 className=' text-3xl'>{t('Referral')}</h1>
+          
+              <h1 className=' text-3xl'>{t('Referral Link')}</h1>
 
-<div className=' bg-white  mt-3  w-80 mx-auto'>
-    
-<div className=' border-yellow-500 rounded-lg border p-4  flex justify-between items-center'>
-                <p>{window.location.origin}/?ref={isConnected? (address.slice(0,4)+"...."+address.slice(38,42)):(null)}</p>
+              {/* <div className=' bg-white  mt-3  w-80 mx-auto'> */}
+      
+                  <div style={{ marginTop:10 }} className=' border-yellow-500 rounded-lg border p-4  flex justify-between items-center'>
+                      <p>{window.location.origin}/?ref={isConnected? (address.slice(0,4)+"...."+address.slice(38,42)):(null)}</p>
 
-                <CopyToClipboard text={`${window.location.origin}/?ref=${address}`} >
-                  <button className="copy-icon flex items-center justify-center">
-                <PiCopySimpleFill color='orange' className=' text-2xl'  />
-                </button>
+                      <CopyToClipboard text={`${window.location.origin}/?ref=${address}`} >
+                        <button className="copy-icon flex items-center justify-center">
+                          <PiCopySimpleFill color='orange' className=' text-2xl'  />
+                        </button>
                       </CopyToClipboard>      
-                {/* <PiCopySimpleFill color='orange' className=' text-2xl'  /> */}
-            </div>
+                  </div>
+              {/* </div> */}
 
-            <button className='primary-btn w-full mt-4 py-2' onClick={()=>showModal_ref(true)}   >{t('REGISTER UPLINER')}</button>
-</div>
+            {isReferred?(
+              <button className='primary-btn w-full mt-4 py-2' onClick={()=>showModal_ref(true)}   >{t('REGISTER UPLINER')}</button>
 
 
-        </div>
+            ):(
+                <>
+                    <h1 style={{ marginTop:10 }} className=' text-3xl'>{t('Upliner')}</h1>
+
+                    <div style={{ marginTop:10 }} className=' border-yellow-500 rounded-lg border p-4  flex justify-between items-center'>
+                        {/* <p>{window.location.origin}/?ref={isConnected? (address.slice(0,4)+"...."+address.slice(38,42)):(null)}</p> */}
+                        <p>{isConnected? (address.slice(0,8)+"...."+address.slice(35,42)):(null)}</p>
+
+                        <CopyToClipboard text={`${window.location.origin}/?ref=${address}`} >
+                          <button className="copy-icon flex items-center justify-center">
+                        <PiCopySimpleFill color='orange' className=' text-2xl'  />
+                        </button>
+                              </CopyToClipboard>      
+                        {/* <PiCopySimpleFill color='orange' className=' text-2xl'  /> */}
+                    </div>        
+                </>
+              
+
+            )}
+              
+
+
         </div>
         <div className='  w-[100%] sm:w-[50%] mx-auto  p-6 shadow-lg rounded-md'>
         <div>
@@ -233,7 +254,7 @@ if(image){
 
         </div>
         </div>
-        <ManualReferral showModal_ref={showModal_ref} refModal={refModal} manualRefree={manualRefree} set_manualRefree={set_manualRefree} />
+        <ManualReferral showModal_ref={showModal_ref} refModal={refModal} manualRefree={manualRefree} set_manualRefree={set_manualRefree} reg_referral={reg_referral}/>
     </div>
   )
 }

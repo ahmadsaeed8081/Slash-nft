@@ -5,7 +5,7 @@ import { GrClose } from 'react-icons/gr'
 import {BsPatchCheckFill} from 'react-icons/bs';
 import { IoLogoUsd } from "react-icons/io";
 import { BiLink } from "react-icons/bi";
-export default function ManualReferral({ refModal, showModal_ref,set_manualRefree,manualRefree }) {
+export default function ManualReferral({ refModal, showModal_ref,set_manualRefree,manualRefree,reg_referral }) {
 
 
     const [activeNav, setActiveNav] = useState(false);
@@ -56,7 +56,7 @@ export default function ManualReferral({ refModal, showModal_ref,set_manualRefre
 
     
                 <div  className='   md:w-[100%] p-5 mt-3   items-center'>
-                    <button className="primary-btn md:w-[100%] p-5 mt-3  " onClick={()=>{set_manualRefree()}} >Register Now</button>
+                    <button className="primary-btn md:w-[100%] p-5 mt-3  " onClick={()=>{reg_referral()}} >Register Now</button>
                 </div>
 
 

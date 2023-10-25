@@ -37,6 +37,7 @@ const [choosedNFT, set_choosedNFT] = useState(0);
 const [mintedNfts, set_mintedNfts] = useState([]);
 const [myNfts, set_myNfts] = useState([]);
 const [manualRefree, set_manualRefree] = useState("0x0000000000000000000000000000000000000000");
+const [isReferred, set_isReferred] = useState(false);
 
 const [loader, setLoader] = useState(false);
 
@@ -94,7 +95,21 @@ const {
 });
 
 
-
+const {
+  data: reg_refResult,
+  isLoading: isLoading_reg_ref,
+  isSuccess: reg_refSuccess,
+  write: reg_ref,
+} = useContractWrite({
+  address: cont_address,
+  abi: cont_abi,
+  functionName: 'referreeRegister',
+  args: [referral],
+  onSuccess(data) {
+    mount();
+    console.log('Success', data)
+  },
+});
 
 const {
   data: data_usdt,
@@ -113,7 +128,16 @@ useSwitchNetwork({
   }
 
 })
+const {switchNetwork:ref_Switch } =
+useSwitchNetwork({
+  chainId: CHAIN_ID1,
+  // throwForSwitchChainNotSupported: true,
+  onSuccess(){
 
+    reg_ref?.();
+  }
+
+})
 
 
 const waitForTransaction = useWaitForTransaction({
@@ -151,7 +175,7 @@ async function mount() {
 
     let maxSupply = await contract.methods.MAX_SUPPLY().call();
     let max_per_wallet = await contract.methods.max_per_wallet().call();
-    let publicSaleCost = await contract.methods.publicSaleCost().call();
+    let isReferred = await contract.methods.isReferred().call();
 
     let mintedList_arr = await contract.methods.get_MintedNFTs().call();
     let myNFTS = await contract.methods.get_myAllNFTs().call({from: address});
@@ -160,6 +184,7 @@ async function mount() {
     console.log("hello minted arr "+mintedList_arr);
     set_mintedNfts(mintedList_arr)
     set_myNfts(myNFTS)
+    set_isReferred(isReferred)
 
     if (id != null) {
 
@@ -186,25 +211,21 @@ async function mount() {
 
 
 
-function reg_ref() {
+function reg_referral() {
 
   if(!isConnected)
   {
     alert("Kindly Connect your wallet");
     return;
   }
-  if(80000000 > Number(usdt_balance) )
-  {
-    alert("you dont have enough usdt to buy");
-    return
-  }
-  console.log("object mint");
-// Mint_Switch?.();
+
+  console.log("object ref"+manualRefree);
 
   if (chain.id != CHAIN_ID) {
-    Mint_Switch?.();
+    ref_Switch?.();
   } else {
-    usdt_approval?.();
+    reg_ref?.();
+    
   }
 }
 
@@ -249,7 +270,7 @@ function reg_ref() {
           <Route  path='/faqs' element={<Faq     />} />
           <Route  path='/market_place' element={<MarketPlace  mintNFT={mintNft} set_choosedNFT={set_choosedNFT} mintedNfts={mintedNfts}/>} />
           <Route  path='/my_nfts' element={<MyNfts  myNfts={myNfts} />} />
-          <Route  path='/profile' element={<Profile manualRefree={manualRefree} set_manualRefree={set_manualRefree} usdt_balance={usdt_balance}  myNfts={myNfts}/>} />
+          <Route  path='/profile' element={<Profile isReferred={isReferred} reg_referral={reg_referral} manualRefree={manualRefree} set_manualRefree={set_manualRefree} usdt_balance={usdt_balance}  myNfts={myNfts}/>} />
           <Route  path='/announcements' element={<Announcements     />} />
        
        
