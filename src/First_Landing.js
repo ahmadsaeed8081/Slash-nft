@@ -36,7 +36,7 @@ const [usdt_balance, set_usdtBalance] = useState(0);
 const [choosedNFT, set_choosedNFT] = useState(0);
 const [mintedNfts, set_mintedNfts] = useState([]);
 const [myNfts, set_myNfts] = useState([]);
-const [manualRefree, set_manualRefree] = useState("0x0000000000000000000000000000000000000000");
+const [manualRefree, set_manualRefree] = useState("");
 const [isReferred, set_isReferred] = useState(false);
 
 const [loader, setLoader] = useState(false);

@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 })); 
-const DB="mongodb+srv://ahmad4354:wOwFW7a2QQSlfE4V@cluster0.skowlx5.mongodb.net/test?retryWrites=true&w=majority";
+const DB="mongodb+srv://chohanahmad1:yCZyxLivMcF6laEJ@cluster0.vvhbr9g.mongodb.net/?retryWrites=true&w=majority";
 // const DB1="mongodb://localhost:27017/myDB";
 
 // mongoose.connect("mongodb://localhost:27017/myDB");
@@ -44,17 +44,16 @@ const collection = new mongoose.model("data",schema);
 
 const InsertData = async () =>{
 const data = new collection({
-    userAddress : "0x7d6bD7b9071366DC6Ec7A61Ae2FA76877Bff2096",
-    NFT : "3",
-    award :"120",
+    userAddress : "0900",
+    Name : "ahmad",
+
 
 })
   await data.save();
 }
 
 const getData = async () =>{
-
-    const result = await collection.find();
+    const result = await collection.find({userAddress : "0900"});
     console.log(result);
 }
 
@@ -108,8 +107,8 @@ app.listen(port, () => {
         console.log("connection is live"+ port);
 });
 
-// InsertData();
-// getData();
+InsertData();
+getData();
 
 
 

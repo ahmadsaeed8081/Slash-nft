@@ -7,6 +7,9 @@ import { Location, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';        
 import {FiEdit} from 'react-icons/fi';
 import { t } from 'i18next';
+
+import { Axios } from 'axios';
+import { upload } from '@testing-library/user-event/dist/upload';
 const Profile = ({usdt_balance,myNfts ,manualRefree,set_manualRefree,reg_referral,isReferred}) => {
 
   const [image,setImage] = useState('');
@@ -85,6 +88,15 @@ if(image){
       setPreview(reader.result)
   }
 }
+
+
+async function upload()
+{
+  const res =await Axios.post("localhost:8000",preview)
+
+}
+
+
   return (
     <div className=' w-full   mb-36  grid  grid-cols-1  md:grid-cols-1 gap-12'>
         <div className=' bg-[#FCD06D]   rounded-b-3xl p-5 py-12'> 
@@ -111,7 +123,7 @@ if(image){
            type='file'      />
            </div>
 
-           <button className="primary-btn  my-3 disabled py-2" type="button"  disabled >Upload Image</button>
+           <button className="primary-btn  my-3 disabled py-2" type="button" onClick={upload}   >Upload Image</button>
 
 
 
@@ -132,11 +144,11 @@ if(image){
 
         <div className=' w-[100%] sm:w-[50%] mx-auto  p-6 shadow-lg rounded-md'>
           
-              <h1 className=' text-3xl'>{t('Referral Link')}</h1>
+              <h1 className=' text-3xl'>{t('My Referral')}</h1>
 
               {/* <div className=' bg-white  mt-3  w-80 mx-auto'> */}
       
-                  <div style={{ marginTop:10 }} className=' border-yellow-500 rounded-lg border p-4  flex justify-between items-center'>
+                  <div className=' border-yellow-500 rounded-lg border p-4  flex justify-between items-center'>
                       <p>{window.location.origin}/?ref={isConnected? (address.slice(0,4)+"...."+address.slice(38,42)):(null)}</p>
 
                       <CopyToClipboard text={`${window.location.origin}/?ref=${address}`} >
@@ -147,17 +159,16 @@ if(image){
                   </div>
               {/* </div> */}
 
-            {isReferred?(
+            {!isReferred?(
               <button className='primary-btn w-full mt-4 py-2' onClick={()=>showModal_ref(true)}   >{t('REGISTER UPLINER')}</button>
 
 
             ):(
                 <>
-                    <h1 style={{ marginTop:10 }} className=' text-3xl'>{t('Upliner')}</h1>
+                    <h1 className=' text-3xl'>{t('MY Upliner')}</h1>
 
                     <div style={{ marginTop:10 }} className=' border-yellow-500 rounded-lg border p-4  flex justify-between items-center'>
-                        {/* <p>{window.location.origin}/?ref={isConnected? (address.slice(0,4)+"...."+address.slice(38,42)):(null)}</p> */}
-                        <p>{isConnected? (address.slice(0,8)+"...."+address.slice(35,42)):(null)}</p>
+                        <p>{window.location.origin}/?ref={isConnected? (address.slice(0,4)+"...."+address.slice(38,42)):(null)}</p>
 
                         <CopyToClipboard text={`${window.location.origin}/?ref=${address}`} >
                           <button className="copy-icon flex items-center justify-center">
