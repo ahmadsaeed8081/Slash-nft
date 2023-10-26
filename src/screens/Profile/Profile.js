@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {PiCopySimpleFill} from 'react-icons/pi';
 import { CopyToClipboard } from "react-copy-to-clipboard";
 // import { CopyIcon } from "../../assets/icons/CopyIcon";
@@ -9,73 +9,21 @@ import {FiEdit} from 'react-icons/fi';
 import { t } from 'i18next';
 
 import { Axios } from 'axios';
+import axios  from 'axios';
+
 import { upload } from '@testing-library/user-event/dist/upload';
 const Profile = ({usdt_balance,myNfts ,manualRefree,set_manualRefree,reg_referral,isReferred}) => {
 
   const [image,setImage] = useState('');
+  const [name,setName] = useState('');
+
   const [refModal,showModal_ref] = useState(false);
 
   console.log(image);
   const [imageCrop,setImageCrop] = useState('');
   
-  const earningLit = [
-    {
-      id: "1",
-      num: "15%",
-      count: 90,
-      earn: 100,
-    },
-    {
-      id: "2",
-      num: "10%",
-      count: 90,
-      earn: 100,
-    },
-    {
-      id: "3",
-      num: "4%",
-      count: 90,
-      earn: 100,
-    },
-    {
-      id: "4",
-      num: "3%",
-      count: 90,
-      earn: 100,
-    },
-    {
-      id: "5",
-      num: "2%",
-      count: 90,
-      earn: 100,
-    },
-    {
-      id: "6",
-      num: "1%",
-      count: 90,
-      earn: 100,
-    },
-    {
-      id: "7",
-      num: "1%",
-      count: 90,
-      earn: 100,
-    },
-    {
-      id: "8",
-      num: "1%",
-      count: 90,
-      earn: 100,
-    },
-    {
-      id: "9",
-      num: "1%",
-      count: 90,
-      earn: 100,
-    },
 
-   
-  ];
+
 
 const [preview ,setPreview] = useState({})
 const { address, isConnected,isConnecting ,isDisconnected} = useAccount()
@@ -88,14 +36,51 @@ if(image){
       setPreview(reader.result)
   }
 }
+useEffect(()=>{
+  if(isConnected)
+  {
+    get_data(); 
+
+  }
+},[address])
 
 
 async function upload()
 {
-  const res =await Axios.post("localhost:8000",preview)
+  
+  const res0 =await axios.get("https://slashapi-production.up.railway.app/get?"+ new URLSearchParams({
+    userAddress: address,}));
+
+  if(res0.data[0].image)
+  {
+    const data={userAddress:address, Name: name,image:preview}
+    const res =await axios.patch("https://slashapi-production.up.railway.app/user/"+ res0.data[0]._id,data);
+
+      console.log(res)
+
+  }
+  else{
+    const data={userAddress:address, Name: name,image:preview}
+
+    const res =await axios.post("https://slashapi-production.up.railway.app/add",data)
+  }
+
+
 
 }
+async function get_data()
+{
 
+
+  const res =await axios.get("https://slashapi-production.up.railway.app/get?"+ new URLSearchParams({
+    userAddress: address,}))
+
+  setPreview(res.data[0].image);
+  setName(res.data[0].Name)
+
+
+
+}
 
   return (
     <div className=' w-full   mb-36  grid  grid-cols-1  md:grid-cols-1 gap-12'>
@@ -122,20 +107,23 @@ async function upload()
            
            type='file'      />
            </div>
+           <div>
 
-           <button className="primary-btn  my-3 disabled py-2" type="button" onClick={upload}   >Upload Image</button>
+          <input className=' bg-gray-200 my-3 flex py-3 px-5 justify-between items-center  rounded-2xl   w-52 mx-auto' type="text" value={name} onChange={(e)=>{
+          setName(e.target.value)
+          }} /> 
 
+          {/* <FiEdit    /> */}
+          <button className="primary-btn  my-3 disabled py-2" type="button" onClick={upload}   >Update</button>
+
+          </div>  
+           {/* <button className="primary-btn  my-3 disabled py-2" type="button" onClick={upload}   >Update Profile</button> */}
+<br></br>
 
 
 
                
-             <div className=' bg-gray-200 my-3 flex py-1 px-3 justify-between items-center  rounded-2xl   w-52 mx-auto'>
 
-                <p className=' text-xl font-semibold'>John Deo</p>
-
-                <FiEdit    />
-
-            </div>  
              {/* <p className=' mb-2'>0xdC45730-213u-daf-as</p> */}
             <button className='     bg-[#DA3D4D]  rounded-lg w-72 py-3 text-lg text-white'>{t('BALANCE')} : {usdt_balance/10**6} USDT</button>
              </div>
@@ -190,45 +178,7 @@ async function upload()
             <h1 className=' text-3xl'>{t('Commissions')}</h1>
               
 <div className="pt-7">
-{/* <div className="earning-sec flex flex-col">
-              <div className="sec-tag">My Referral Earnings</div>
-              <div className="table-block flex flex-col">
-                <div className="table-row flex items-center">
-                  <div className="row-item flex flex-col">
-                    <div className="row-lbl">Levels</div>
-                  </div>
-                  <div className="row-item flex flex-col">
-                    <div className="row-lbl">Earning Percentage</div>
-                  </div>
-                  <div className="row-item flex flex-col">
-                    <div className="row-lbl">No. of Refered Investors</div>
-                  </div>
-                  <div className="row-item flex flex-col">
-                    <div className="row-lbl">Total Earning (SPC)</div>
-                  </div>
-                </div>
-                {earningLit.map((item, index) => (
-                  <div key={index} className="table-row flex items-center">
-                    <div className="row-item flex flex-col">
-                      <div className="row-lbl">{item.id}</div>
-                    </div>
-                    <div className="row-item flex flex-col">
-                      <div className="row-lbl">{item.num}</div>
-                    </div>
-                    <div className="row-item flex flex-col">
-                      <div className="row-lbl">
-                        {item.count ? item.count : "0"}
-                      </div>
-                    </div>
-                    <div className="row-item flex flex-col">
-                      <div className="row-lbl">
-                        {item.earn ? item.earn / 10 ** 18 : "0"}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div> */}
+
 <span>No commissions yet</span>
 </div>
                
