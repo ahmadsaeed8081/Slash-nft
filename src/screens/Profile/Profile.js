@@ -77,7 +77,6 @@ async function get_data()
 
     const res =await axios.get("https://slashapi-production.up.railway.app/get?"+ new URLSearchParams({
       userAddress: address}))
-      alert(res)
       if(res.data[0]!=undefined)
       {
     setPreview(res.data[0].image);
