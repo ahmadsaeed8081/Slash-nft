@@ -218,8 +218,11 @@ function reg_referral() {
     alert("Kindly Connect your wallet");
     return;
   }
-
-  console.log("object ref"+manualRefree);
+  if(manualRefree==""||manualRefree==" ")
+  {
+    alert("Kidnly Write your upliner Adress")
+    return
+  }
 
   if (chain.id != CHAIN_ID) {
     ref_Switch?.();
