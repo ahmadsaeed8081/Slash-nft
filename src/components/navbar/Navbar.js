@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { TfiAngleRight } from 'react-icons/tfi'
 import { HiMenuAlt2 } from 'react-icons/hi';
@@ -17,6 +17,7 @@ import MyBalanceModal from '../MyBalanceModal/MyBalanceModal';
 import DestopLanguage from '../DestopLanguage/DestopLanguage';
 import { useAccount, useDisconnect } from 'wagmi'
 import { useWeb3Modal } from '@web3modal/react'
+import axios  from 'axios';
 
 const Navbar = ({usdt_balance}) => {
 
@@ -38,6 +39,51 @@ const Navbar = ({usdt_balance}) => {
     const { address, isConnected,isDisconnected } = useAccount()
 
 
+
+    const [image,setImage] = useState('');
+    const [name,setName] = useState('');
+  
+    const [refModal,showModal_ref] = useState(false);
+  
+
+    
+  
+  
+  
+  const [preview ,setPreview] = useState({})
+  
+  console.log(preview);
+  if(image){
+    const reader = new FileReader()
+     reader.readAsDataURL(image[0])
+    reader.onload = () =>{
+        setPreview(reader.result)
+    }
+  }
+  useEffect(()=>{
+    if(isConnected)
+    {
+      get_data(); 
+  
+    }
+  },[address])
+    async function get_data()
+    {
+    
+    
+        const res =await axios.get("https://slashapi-production.up.railway.app/get?"+ new URLSearchParams({
+          userAddress: address}))
+          if(res.data[0]!=undefined)
+          {
+        setPreview(res.data[0].image);
+        setName(res.data[0].Name)
+      }
+    
+    
+    
+    
+      
+    }
     return (
         <>
             <div className=' bg-white flex justify-between items-center w-screen p-2 h-20 pl-5 pr-6 md:pl-24 container mx-auto'>
@@ -111,6 +157,7 @@ const Navbar = ({usdt_balance}) => {
                         </div>
                         <div>
                             <Link to='/'>
+                                
                                 <img src={require('../../assets/image/logo.png')} width="110px" alt='' />
                             </Link>
                         </div>
@@ -124,11 +171,11 @@ const Navbar = ({usdt_balance}) => {
                     <Link onClick={() => { setActiveNav(false) }} to='/profile' className='border   border-blue-700 p-3  rounded-2xl mt-3 flex  items-center gap-3'>
 
                         <div className='bg-gray-200 w-12 h-12 rounded-full p-2'>
-                            {/* <FaUserAlt/> */}
+                            <img  src={!preview?require('../../assets/image/logo.png'):preview} className='w-full h-full' />
                         </div>
                         <div>
-                            <p className=' text-lg' >John Doe</p>
-                            <p>38903-23dldjkkl</p>
+                            <p className=' text-lg' >{name}</p>
+                            {/* <p>38903-23dldjkkl</p> */}
 
                         </div>
 
@@ -146,7 +193,7 @@ const Navbar = ({usdt_balance}) => {
 
 
                     </div>
-                    <div onClick={() => setShowModal3(true)} className='border  border-yellow-700 p-3  rounded-2xl mt-3 flex  items-center gap-3'>
+                    {/* <div onClick={() => setShowModal3(true)} className='border  border-yellow-700 p-3  rounded-2xl mt-3 flex  items-center gap-3'>
 
                         <div className='bg-gray-200 rounded-md p-2'>
                             <BsWalletFill />
@@ -155,10 +202,9 @@ const Navbar = ({usdt_balance}) => {
                             <p className=' text-lg' >{t('my_wallet')}</p>
                         </div>
 
-                        {/* <TfiAngleRight/> */}
 
 
-                    </div>
+                    </div> */}
 
 
                     <div className='bg-white'>
