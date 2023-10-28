@@ -70,7 +70,7 @@ useEffect(()=>{
                   <div className='  bg-white   rounded-lg p-4 md:flex flex-none  w-[50%] md:w-[30%] items-center gap-2'>
 
                   <div className=' w-12 h-12 rounded-full'>
-                    <img src={require('../../assets/image/1.png')}   className=' w-full rounded-full' />
+                    <img src={item.image}   className=' w-full rounded-full' />
                   </div>
 
                   <div>
